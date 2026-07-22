@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Unified Asset & Operations Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14181C;
+    --panel:#1C2228;
+    --panel-alt:#20272E;
+    --border:#2A323A;
+    --text:#E8ECEE;
+    --text-dim:#8B96A0;
+    --text-faint:#5B6570;
+    --critical:#E8622C;
+    --warning:#C9A227;
+    --healthy:#4FA8A0;
+    --data:#D4A73B;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:14px;
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    overflow:hidden;
+  }
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 22px;
+    border-bottom:1px solid var(--border);
+    background:var(--panel);
+    flex-shrink:0;
+  }
+  .topbar-title{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .topbar-title h1{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    margin:0;
+    color:var(--text);
+  }
+  .topbar-title span{
+    font-size:11.5px;
+    color:var(--text-faint);
+    letter-spacing:0.03em;
+  }
+  .topbar-status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:var(--text-dim);
+  }
+  .pulse-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--healthy);
+    box-shadow:0 0 0 0 rgba(79,168,160,0.6);
+    animation:pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(79,168,160,0.45);}
+    70%{box-shadow:0 0 0 6px rgba(79,168,160,0);}
+    100%{box-shadow:0 0 0 0 rgba(79,168,160,0);}
+  }
+  .layout{
+    display:flex;
+    flex:1;
+    min-height:0;
+  }
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:296px;
+    flex-shrink:0;
+    border-right:1px solid var(--border);
+    background:var(--panel);
+    overflow-y:auto;
+    padding:16px 0 16px 0;
+  }
+  .sidebar-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    color:var(--text-faint);
+    padding:0 18px 10px 18px;
+    text-transform:uppercase;
+  }
+  .asset-card{
+    padding:12px 18px;
+    border-left:3px solid transparent;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .asset-card:hover{background:var(--panel-alt);}
+  .asset-card.active{background:var(--panel-alt);}
+  .asset-card.status-critical{border-left-color:var(--critical);}
+  .asset-card.status-warning{border-left-color:var(--warning);}
+  .asset-card.status-normal{border-left-color:var(--border);}
+  .asset-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .asset-name{
+    font-weight:600;
+    font-size:13.5px;
+    color:var(--text);
+  }
+  .asset-led{
+    width:8px;height:8px;border-radius:50%;
+    flex-shrink:0;
+  }
+  .asset-led.status-critical{background:var(--critical);animation:pulse-red 1.6s infinite;}
+  .asset-led.status-warning{background:var(--warning);}
+  .asset-led.status-normal{background:var(--healthy);}
+  @keyframes pulse-red{
+    0%{box-shadow:0 0 0 0 rgba(232,98,44,0.55);}
+    70%{box-shadow:0 0 0 7px rgba(232,98,44,0);}
+    100%{box-shadow:0 0 0 0 rgba(232,98,44,0);}
+  }
+  .asset-reason{
+    font-size:11.5px;
+    color:var(--text-dim);
+    margin-top:4px;
+    line-height:1.4;
+  }
+  .asset-card.status-critical .asset-reason{color:var(--critical);}
+  .sparkline{margin-top:8px;display:block;}
+  /* ---------- Main panel ---------- */
+  .main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+  }
+  .feed{
+    flex:1;
+    overflow-y:auto;
+    padding:22px 26px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .msg-user{
+    align-self:flex-end;
+    max-width:70%;
+    background:var(--panel-alt);
+    border:1px solid var(--border);
+    border-radius:8px 8px 2px 8px;
+    padding:10px 14px;
+    font-size:13.5px;
+  }
+  .msg-agent{
+    align-self:flex-start;
+    max-width:82%;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:8px 8px 8px 2px;
+    padding:14px 16px;
+  }
+  .agent-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:8px;
+    gap:10px;
+  }
+  .agent-tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    color:var(--text-faint);
+    text-transform:uppercase;
+  }
+  .confidence-badge{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:3px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    white-space:nowrap;
+  }
+  .confidence-high{background:rgba(79,168,160,0.15);color:var(--healthy);}
+  .confidence-mid{background:rgba(201,162,39,0.15);color:var(--warning);}
+  .confidence-low{background:rgba(232,98,44,0.15);color:var(--critical);}
+  .agent-body{
+    font-size:13.5px;
+    line-height:1.55;
+    color:var(--text);
+  }
+  .escalate-banner{
+    margin-top:10px;
+    padding:9px 12px;
+    background:rgba(232,98,44,0.1);
+    border:1px solid rgba(232,98,44,0.35);
+    border-radius:6px;
+    font-size:12.5px;
+    color:var(--critical);
+    font-weight:500;
+  }
+  .evidence-toggle{
+    margin-top:10px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--text-dim);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    user-select:none;
+  }
+  .evidence-toggle:hover{color:var(--data);}
+  .evidence-toggle .chev{transition:transform 0.15s ease;font-size:9px;}
+  .evidence-toggle.open .chev{transform:rotate(90deg);}
+  .evidence-json{
+    display:none;
+    margin-top:8px;
+    background:#0F1215;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:12px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    line-height:1.6;
+    color:#9FCF8F;
+    overflow-x:auto;
+    white-space:pre;
+  }
+  .evidence-json.open{display:block;}
+  .thinking{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--text-faint);
+  }
+  .composer{
+    border-top:1px solid var(--border);
+    background:var(--panel);
+    padding:14px 22px 18px 22px;
+    flex-shrink:0;
+  }
+  .composer-row{
+    display:flex;
+    gap:10px;
+  }
+  .composer input{
+    flex:1;
+    background:var(--panel-alt);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:11px 14px;
+    color:var(--text);
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:13.5px;
+    outline:none;
+  }
+  .composer input:focus{border-color:var(--data);}
+  .composer input::placeholder{color:var(--text-faint);}
+  .composer button{
+    background:var(--data);
+    border:none;
+    border-radius:6px;
+    padding:0 20px;
+    color:#14181C;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .composer button:disabled{opacity:0.5;cursor:default;}
+  .composer-hint{
+    margin-top:8px;
+    font-size:11px;
+    color:var(--text-faint);
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .composer-hint span{cursor:pointer;}
+  .composer-hint span:hover{color:var(--data);}
+  ::-webkit-scrollbar{width:8px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-title">
+    <h1>UNIFIED ASSET &amp; OPERATIONS BRAIN</h1>
+    <span>Plant Floor Console · Sector 7 · Live Telemetry</span>
+  </div>
+  <div class="topbar-status">
+    <div class="pulse-dot"></div>
+    <span id="sourceCount">3 data sources connected</span>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-label">Monitored Assets</div>
+    <div id="assetList"></div>
+  </div>
+
+  <div class="main">
+    <div class="feed" id="feed"></div>
+    <div class="composer">
+      <div class="composer-row">
+        <input id="chatInput" type="text" placeholder="Ask the operations brain about any asset…" />
+        <button id="sendBtn">Ask</button>
+      </div>
+      <div class="composer-hint">
+        <span data-q="Why is Compressor 3 flagged?">Try: "Why is Compressor 3 flagged?"</span>
+        <span data-q="What is the maintenance history on Pump 7?">"Maintenance history on Pump 7?"</span>
+        <span data-q="Is the plant HVAC chiller safe to run overnight?">"Is the HVAC chiller safe overnight?"</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA LAYER — simulated SCADA feed, knowledge graph,
+   vector store (maintenance logs) and manual library.
+   ============================================================ */
+
+const ASSETS = [
+  {
+    id: "compressor-3",
+    name: "Compressor 3",
+    aliases: ["compressor 3","comp 3","compressor #3","compressor three"],
+    status: "critical",
+    reason: "Vibration 6.8 mm/s RMS — rising trend, 3.4σ above baseline",
+    spark: [1.9,2.0,2.1,2.3,2.6,3.1,3.9,4.7,5.6,6.1,6.5,6.8]
+  },
+  {
+    id: "turbine-2",
+    name: "Turbine 2",
+    aliases: ["turbine 2","turbine #2"],
+    status: "warning",
+    reason: "Bearing temp drifting +4°C over 6h, within tolerance",
+    spark: [61,61,62,62,63,63,64,64,65,65,65,66]
+  },
+  {
+    id: "pump-7",
+    name: "Pump 7",
+    aliases: ["pump 7","pump #7","pump seven"],
+    status: "normal",
+    reason: "Nominal — realigned during last PM cycle",
+    spark: [2.1,2.0,2.1,2.0,2.2,2.1,2.0,2.1,2.0,2.1,2.0,2.1]
+  },
+  {
+    id: "conveyor-5",
+    name: "Conveyor Motor 5",
+    aliases: ["conveyor motor 5","conveyor 5","conveyor motor #5"],
+    status: "normal",
+    reason: "Nominal — load and current within spec",
+    spark: [40,41,40,42,41,40,41,42,41,40,41,40]
+  },
+  {
+    id: "chiller-1",
+    name: "HVAC Chiller Unit 1",
+    aliases: ["chiller","hvac chiller","chiller unit 1","chiller 1"],
+    status: "normal",
+    reason: "Nominal — no anomalies in refrigerant loop",
+    spark: [7,7,7,7,7,6,7,7,7,7,7,7]
+  }
+];
+
+const KNOWLEDGE_GRAPH = {
+  "Compressor 3": {
+    components: ["Bearing Assembly","Rotor Shaft","Mechanical Seal","Drive Motor"],
+    failureModes: [
+      {component:"Bearing Assembly", mode:"Bearing wear", signature:"Vibration at 3–5x rotational frequency, rising RMS trend"},
+      {component:"Mechanical Seal", mode:"Seal leak / lubricant contamination", signature:"Leading indicator: oil analysis particulate count increase"}
+    ]
+  },
+  "Pump 7": {
+    components: ["Impeller","Motor Coupling"],
+    failureModes: [
+      {component:"Motor Coupling", mode:"Misalignment", signature:"Elevated 1x vibration, axial thrust increase"}
+    ]
+  },
+  "Turbine 2": {
+    components: ["Bearing Housing","Blade Assembly"],
+    failureModes: [
+      {component:"Bearing Housing", mode:"Lubrication film breakdown", signature:"Gradual bearing temperature rise, no vibration correlation yet"}
+    ]
+  }
+};
+
+const MAINTENANCE_LOGS = [
+  {id:"LOG-221", asset:"Compressor 3", date:"2025-11-02", technician:"R. Fernandes",
+   note:"Replaced bearing assembly on Compressor 3 after high-vibration alarm. Root cause traced to lubricant contamination from a slow mechanical seal leak. Vibration returned to baseline (1.8 mm/s) after replacement.",
+   tags:["bearing","vibration","seal","contamination","replacement"]},
+  {id:"LOG-198", asset:"Compressor 3", date:"2025-06-14", technician:"A. Mehta",
+   note:"Routine inspection of Compressor 3 seal assembly. Minor wear noted, no action required at this time.",
+   tags:["seal","inspection","routine"]},
+  {id:"LOG-240", asset:"Pump 7", date:"2025-09-01", technician:"S. Rao",
+   note:"Pump 7 motor coupling realigned during scheduled PM. No anomalies since.",
+   tags:["coupling","alignment","pm"]},
+  {id:"LOG-255", asset:"Turbine 2", date:"2025-12-10", technician:"R. Fernandes",
+   note:"Turbine 2 bearing housing re-lubricated after temperature trend flagged by monitoring. Temp stabilized within 24h.",
+   tags:["bearing","lubrication","temperature"]}
+];
+
+const MANUAL_EXCERPTS = [
+  {id:"MANUAL-CMP3-4.2", asset:"Compressor 3", section:"Sec. 4.2 — Vibration Troubleshooting",
+   text:"If vibration exceeds 7.0 mm/s RMS at 1x running speed, inspect the bearing assembly for wear before restart. Lubricant contamination is a common root cause of premature bearing failure. Do not exceed 10 mm/s under any operating condition."},
+  {id:"MANUAL-PUMP7-2.1", asset:"Pump 7", section:"Sec. 2.1 — Alignment Procedure",
+   text:"Coupling misalignment beyond 0.05mm requires realignment within one operating cycle to prevent accelerated bearing wear."},
+  {id:"MANUAL-TURB2-3.4", asset:"Turbine 2", section:"Sec. 3.4 — Bearing Temperature Limits",
+   text:"Sustained bearing housing temperature above 70°C warrants inspection of the lubrication film. Below this threshold, gradual drift is monitored but not actioned."}
+];
+
+/* ============================================================
+   RETRIEVAL — lightweight keyword-overlap simulation standing
+   in for the vector store + graph traversal used in production.
+   ============================================================ */
+
+const STOPWORDS = new Set(["a","an","the","is","are","was","why","what","how","on","in","of","to","for","and","do","does","it","this","that","we","you","i","should","can","overnight","safe","run","history"]);
+
+function normalizeWords(str){
+  return str.toLowerCase().replace(/[^a-z0-9\s]/g," ").split(/\s+/).filter(w=>w && !STOPWORDS.has(w));
+}
+
+function overlapScore(queryWords, text){
+  const target = new Set(normalizeWords(text));
+  if(queryWords.length===0) return 0;
+  let hits=0;
+  queryWords.forEach(w=>{ if(target.has(w)) hits++; });
+  return hits/queryWords.length;
+}
+
+function detectAsset(query){
+  const q = query.toLowerCase();
+  for(const a of ASSETS){
+    for(const alias of a.aliases){
+      if(q.includes(alias)) return a;
+    }
+  }
+  return null;
+}
+
+function retrieve(query){
+  const asset = detectAsset(query);
+  const qWords = normalizeWords(query);
+
+  if(!asset){
+    return {
+      asset: null,
+      graph: null,
+      logs: [],
+      manuals: [],
+      anomaly: null,
+      confidence: 0.15
+    };
+  }
+
+  const graph = KNOWLEDGE_GRAPH[asset.name] || null;
+
+  const logs = MAINTENANCE_LOGS
+    .filter(l=>l.asset===asset.name)
+    .map(l=>({...l, score: Math.max(overlapScore(qWords, l.note), overlapScore(qWords, l.tags.join(" ")))}))
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,2);
+
+  const manuals = MANUAL_EXCERPTS
+    .filter(m=>m.asset===asset.name)
+    .map(m=>({...m, score: overlapScore(qWords, m.text)}))
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,1);
+
+  const logScore = logs.length ? logs[0].score : 0;
+  const manualScore = manuals.length ? manuals[0].score : 0;
+
+  let confidence = 0.4; // asset correctly identified
+  if(graph) confidence += 0.15;
+  confidence += 0.3 * logScore;
+  confidence += 0.15 * manualScore;
+  if(asset.status !== "normal" && /why|flag|alert|wrong|issue|problem/.test(query.toLowerCase())) confidence += 0.1;
+  confidence = Math.max(0, Math.min(1, confidence));
+
+  return {
+    asset,
+    graph,
+    logs,
+    manuals,
+    anomaly: {status: asset.status, reason: asset.reason},
+    confidence: Math.round(confidence*100)/100
+  };
+}
+
+/* ============================================================
+   REASONING — calls Claude to synthesize the retrieved evidence
+   into an operator-facing answer. Escalation state is decided
+   deterministically from the confidence score, not by the model.
+   ============================================================ */
+
+async function reason(query, evidence){
+  const system = `You are an Industrial Knowledge Intelligence Agent embedded in a plant floor console.
+You must answer ONLY using the evidence JSON provided in the user message — never invent facts, log IDs, or manual sections that are not present in it.
+Write 2-4 short sentences in plain operator-facing language (no markdown, no headers).
+Reference specific evidence where relevant (e.g. "per LOG-221" or "per Sec. 4.2").
+If evidence.confidence is below 0.5, do not offer a definitive root-cause diagnosis — state clearly that retrieval confidence is low and this should be escalated to a human technician instead of guessing.
+If evidence.asset is null, say plainly that no matching asset was found in the system and ask the operator to specify a monitored asset.`;
+
+  const payload = { operator_query: query, evidence };
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-6",
+        max_tokens:1000,
+        system: system,
+        messages:[{role:"user", content: JSON.stringify(payload)}]
+      })
+    });
+    const data = await response.json();
+    const textBlock = (data.content || []).find(b=>b.type==="text");
+    if(textBlock) return textBlock.text;
+    throw new Error("no text block in response");
+  }catch(err){
+    console.error("Reasoning call failed:", err);
+    // deterministic fallback so the demo never goes blank
+    if(!evidence.asset){
+      return "No matching asset found in the system for that query — please specify a monitored asset (e.g. Compressor 3, Pump 7).";
+    }
+    if(evidence.confidence < 0.5){
+      return `Retrieval confidence is low (${evidence.confidence}) for ${evidence.asset.name} — recommend escalating to a human technician rather than acting on this answer.`;
+    }
+    return `${evidence.asset.name} status: ${evidence.anomaly.reason}. See evidence panel for supporting log and manual references.`;
+  }
+}
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+
+function sparklineSVG(points, color){
+  const w=110, h=28, pad=2;
+  const min=Math.min(...points), max=Math.max(...points);
+  const range = (max-min) || 1;
+  const step = (w-pad*2)/(points.length-1);
+  const coords = points.map((p,i)=>{
+    const x = pad + i*step;
+    const y = h - pad - ((p-min)/range)*(h-pad*2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  return `<svg class="sparkline" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <polyline points="${coords}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+const statusColor = {critical:"var(--critical)", warning:"var(--warning)", normal:"var(--healthy)"};
+
+function renderAssets(){
+  const list = document.getElementById("assetList");
+  list.innerHTML = ASSETS.map(a=>`
+    <div class="asset-card status-${a.status}" data-name="${a.name}">
+      <div class="asset-row">
+        <span class="asset-name">${a.name}</span>
+        <span class="asset-led status-${a.status}"></span>
+      </div>
+      <div class="asset-reason">${a.reason}</div>
+      ${sparklineSVG(a.spark, statusColor[a.status].replace("var(","").replace(")","")===a.status ? "" : "")}
+    </div>
+  `).join("");
+  // sparkline color pass (done separately to keep template simple)
+  document.querySelectorAll(".asset-card").forEach((el,i)=>{
+    const svg = el.querySelector("svg polyline");
+    if(svg) svg.setAttribute("stroke", getComputedStyle(document.documentElement).getPropertyValue(
+      ASSETS[i].status==="critical" ? "--critical" : ASSETS[i].status==="warning" ? "--warning" : "--healthy"
+    ));
+  });
+  list.querySelectorAll(".asset-card").forEach(el=>{
+    el.addEventListener("click", ()=>{
+      document.getElementById("chatInput").value = `Why is ${el.dataset.name} flagged?`;
+      document.getElementById("chatInput").focus();
+    });
+  });
+}
+
+function confidenceClass(c){
+  if(c>=0.65) return "confidence-high";
+  if(c>=0.4) return "confidence-mid";
+  return "confidence-low";
+}
+
+function addUserMessage(text){
+  const feed = document.getElementById("feed");
+  const div = document.createElement("div");
+  div.className = "msg-user";
+  div.textContent = text;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function addThinkingMessage(){
+  const feed = document.getElementById("feed");
+  const div = document.createElement("div");
+  div.className = "msg-agent";
+  div.id = "thinkingMsg";
+  div.innerHTML = `<div class="thinking">retrieving graph + logs + manuals…</div>`;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function addAgentMessage(answerText, evidence){
+  const feed = document.getElementById("feed");
+  const thinking = document.getElementById("thinkingMsg");
+  if(thinking) thinking.remove();
+
+  const cClass = confidenceClass(evidence.confidence);
+  const escalate = evidence.confidence < 0.5;
+
+  const div = document.createElement("div");
+  div.className = "msg-agent";
+  div.innerHTML = `
+    <div class="agent-head">
+      <span class="agent-tag">Operations Brain</span>
+      <span class="confidence-badge ${cClass}">CONFIDENCE ${evidence.confidence.toFixed(2)}</span>
+    </div>
+    <div class="agent-body">${answerText}</div>
+    ${escalate ? `<div class="escalate-banner">⚠ Low retrieval confidence — escalate to a human technician instead of acting on this answer.</div>` : ``}
+    <div class="evidence-toggle"><span class="chev">▶</span> View Evidence &amp; Citations</div>
+    <div class="evidence-json">${JSON.stringify(evidence, null, 2).replace(/</g,"&lt;")}</div>
+  `;
+  feed.appendChild(div);
+
+  const toggle = div.querySelector(".evidence-toggle");
+  const json = div.querySelector(".evidence-json");
+  toggle.addEventListener("click", ()=>{
+    toggle.classList.toggle("open");
+    json.classList.toggle("open");
+  });
+
+  feed.scrollTop = feed.scrollHeight;
+}
+
+async function handleAsk(){
+  const input = document.getElementById("chatInput");
+  const btn = document.getElementById("sendBtn");
+  const query = input.value.trim();
+  if(!query) return;
+
+  addUserMessage(query);
+  input.value = "";
+  btn.disabled = true;
+  addThinkingMessage();
+
+  const evidence = retrieve(query);
+  const answer = await reason(query, evidence);
+  addAgentMessage(answer, evidence);
+
+  btn.disabled = false;
+  input.focus();
+}
+
+document.getElementById("sendBtn").addEventListener("click", handleAsk);
+document.getElementById("chatInput").addEventListener("keydown", e=>{
+  if(e.key==="Enter") handleAsk();
+});
+document.querySelectorAll(".composer-hint span").forEach(el=>{
+  el.addEventListener("click", ()=>{
+    document.getElementById("chatInput").value = el.dataset.q;
+    handleAsk();
+  });
+});
+
+renderAssets();
+
+// Seed the feed with a system message describing what's connected
+(function seedFeed(){
+  const feed = document.getElementById("feed");
+  const div = document.createElement("div");
+  div.className = "msg-agent";
+  div.innerHTML = `
+    <div class="agent-head"><span class="agent-tag">System</span></div>
+    <div class="agent-body">Connected: SCADA sensor feed (5 assets) · Knowledge graph (3 asset failure-mode maps) · Maintenance log store (4 entries) · Manual library (3 excerpts). Compressor 3 is currently flagged — ask the console why, or click any asset in the sidebar.</div>
+  `;
+  feed.appendChild(div);
+})();
+</script>
+</body>
+</html>
