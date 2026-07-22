@@ -1,8 +1,28 @@
+# ==========================
+# Python
+# ==========================
 .venv/
 __pycache__/
 *.pyc
+
+# Environment variables
 .env
-uploads/
+
+# ChromaDB
 chroma_db/
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
+
+# IDEs
 .vscode/
 .idea/
+
+# ==========================
+# Node.js
+# ==========================
+node_modules/
+
+# Logs
+*.log
