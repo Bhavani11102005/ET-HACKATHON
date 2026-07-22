@@ -1,137 +1,447 @@
-# IKI Platform — Backend (Node.js + Express + MongoDB)
+# 🧠 Industrial Knowledge Intelligence (IKI) Platform
 
-Backend for the Industrial Knowledge Intelligence platform. Handles auth, document
-upload/metadata, and chat history — and bridges chat/upload requests to Member 3's
-Python AI/RAG service.
+## AI-Powered Industrial Knowledge Management System using RAG
 
-## Setup
+---
+
+## 📌 Overview
+
+Industrial Knowledge Intelligence (IKI) is an AI-powered platform designed to transform industrial documents into an intelligent knowledge system.
+
+The platform enables users to upload and interact with industrial documents such as:
+
+- PDF manuals
+- DOC/DOCX files
+- Excel sheets
+- PowerPoint presentations
+
+Using **Retrieval Augmented Generation (RAG)** and Large Language Models, IKI provides:
+
+- Intelligent document search
+- AI-powered question answering
+- Document summarization
+- Semantic knowledge retrieval
+- Citation-based responses
+- Document comparison
+
+The goal is to reduce manual effort in searching industrial information and provide accurate knowledge access through AI.
+
+---
+
+# 🏗️ System Architecture
+
+```
+                         User
+                           |
+                           |
+                  React Web Application
+                           |
+                           |
+                  AI Knowledge Platform
+                           |
+        -------------------------------------
+        |                                   |
+ Document Processing                 AI Intelligence
+        |                                   |
+        |                            Gemini API
+        |                                   |
+        |                            LangChain
+        |                                   |
+        |                            ChromaDB
+        |
+ PDF / DOCX / Excel / PPT
+        |
+ Text Extraction
+        |
+ Chunking
+        |
+ Embedding Generation
+        |
+ Vector Storage
+
+```
+
+---
+
+# 👥 Team Modules
+
+## 👨‍💻 Frontend & UI/UX Module
+
+### Responsibilities
+
+- React application development
+- Dashboard creation
+- User interface design
+- Document upload interface
+- AI chat interface
+- Search interface
+- Analytics dashboard
+- User profile management
+
+
+### Technologies
+
+- React
+- Tailwind CSS
+- Material UI
+- Axios
+- Chart.js
+
+
+### Deliverables
+
+✅ Responsive web application  
+✅ Interactive dashboards  
+✅ AI chat interface  
+✅ API integration  
+
+---
+
+# 🤖 AI & RAG Intelligence Module
+
+## Responsibilities
+
+The AI module handles document understanding and intelligent retrieval.
+
+### Document Processing
+
+Supports:
+
+- PDF parsing
+- DOCX extraction
+- Excel data processing
+- PPT content extraction
+
+
+### RAG Pipeline
+
+Workflow:
+
+```
+Document Upload
+        |
+        ↓
+Text Extraction
+        |
+        ↓
+Document Chunking
+        |
+        ↓
+Embedding Generation
+        |
+        ↓
+Vector Database Storage
+        |
+        ↓
+User Query
+        |
+        ↓
+Similarity Search
+        |
+        ↓
+Gemini LLM Response
+```
+
+---
+
+## Technologies
+
+- Python
+- LangChain
+- Gemini API
+- ChromaDB
+- PyMuPDF
+- python-docx
+- Pandas
+
+
+## Deliverables
+
+✅ Complete RAG pipeline  
+✅ AI chatbot  
+✅ Semantic search engine  
+✅ Knowledge retrieval system  
+
+---
+
+# 📊 Advanced AI Features Module
+
+## Intelligent Document Analysis
+
+### Document Summarization
+
+Automatically generates:
+
+- Key points
+- Important information
+- Document overview
+
+
+---
+
+### Document Comparison
+
+AI compares multiple documents and identifies:
+
+- Similarities
+- Differences
+- Updated sections
+- Missing information
+
+
+---
+
+### Compliance Checker
+
+Analyzes documents to identify:
+
+- Rule violations
+- Missing requirements
+- Safety compliance issues
+
+
+---
+
+### Citation Generation
+
+AI responses include:
+
+- Source document
+- Relevant page number
+- Extracted content snippet
+- Confidence score
+
+
+---
+
+### Analytics Dashboard
+
+Provides insights about:
+
+- Frequently searched topics
+- Document usage
+- User interactions
+- Knowledge trends
+
+
+---
+
+# 🔄 AI Workflow
+
+```
+Industrial Documents
+
+        |
+        ↓
+
+Document Understanding
+
+        |
+        ↓
+
+AI Knowledge Extraction
+
+        |
+        ↓
+
+Vector Database
+
+        |
+        ↓
+
+User Question
+
+        |
+        ↓
+
+Semantic Retrieval
+
+        |
+        ↓
+
+Gemini AI Response
+
+        |
+        ↓
+
+Answer + Citations
+
+```
+
+---
+
+# 🛠️ Technology Stack
+
+## Frontend
+
+```
+React
+Tailwind CSS
+Material UI
+Axios
+Chart.js
+```
+
+## Artificial Intelligence
+
+```
+Python
+LangChain
+Gemini API
+ChromaDB
+Embedding Models
+```
+
+## Document Processing
+
+```
+PyMuPDF
+python-docx
+Pandas
+```
+
+## Deployment
+
+```
+Docker
+Vercel
+Render
+GitHub
+```
+
+---
+
+# 📂 Project Structure
+
+```
+IKI-Platform
+
+│
+├── frontend
+│
+│   ├── components
+│   ├── pages
+│   ├── services
+│   └── assets
+│
+│
+├── ai-service
+│
+│   ├── document_parser
+│   ├── embeddings
+│   ├── rag_pipeline
+│   ├── vector_store
+│   └── models
+│
+│
+└── README.md
+
+```
+
+---
+
+# 🚀 Features
+
+## 📄 Intelligent Document Processing
+
+- Upload industrial documents
+- Extract meaningful information
+- Convert documents into searchable knowledge
+
+
+## 💬 AI Knowledge Assistant
+
+Users can ask questions like:
+
+> "Explain the machine maintenance procedure"
+
+> "What are the safety requirements?"
+
+The AI provides contextual answers from uploaded documents.
+
+
+## 🔍 Semantic Search
+
+Unlike traditional keyword search, the system understands the meaning behind queries.
+
+
+## 📑 Source-Based Answers
+
+Every response provides:
+
+- Document reference
+- Page number
+- Relevant text
+- Confidence score
+
+
+---
+
+# ⚙️ AI Module Setup
+
+## Install Requirements
 
 ```bash
-cd backend
-npm install
-cp .env.example .env   # then fill in MONGO_URI, JWT_SECRET, AI_SERVICE_URL
-npm run dev             # nodemon, or `npm start` for plain node
+pip install -r requirements.txt
 ```
 
-Requires a running MongoDB instance (local `mongodb://localhost:27017/iki_platform`
-or an Atlas URI) and, for chat/upload processing to fully complete, Member 3's AI
-service reachable at `AI_SERVICE_URL`.
+---
 
-## Folder structure
+## Environment Variables
+
+Create:
 
 ```
-backend/
-  server.js              # entry point, middleware wiring
-  config/db.js            # mongoose connection
-  models/                 # User, Document, ChatMessage
-  middleware/              # auth (JWT), upload (multer), validate, errorHandler
-  controllers/              # route logic
-  routes/                    # /api/auth, /api/documents, /api/chat
-  uploads/                     # uploaded files land here (gitignored)
+.env
 ```
 
-## Security included
+Add:
 
-- Passwords hashed with bcrypt (never stored/returned in plaintext)
-- JWT auth on every route except register/login
-- `helmet` for HTTP security headers, `cors` scoped to `CLIENT_URL`
-- Rate limiting: 300 req/15min globally, 20 req/15min on `/api/auth`
-- `express-validator` on register/login inputs
-- File upload restricted to pdf/doc/docx/xls/xlsx/ppt/pptx, 25MB max
-- Centralized error handler (no stack traces leaked to client)
-
-## API Reference (for Member 1 – React frontend)
-
-Base URL: `http://localhost:5000/api`
-Auth: send `Authorization: Bearer <token>` header on all routes except register/login.
-
-### Auth
-
-| Method | Route | Body | Notes |
-|---|---|---|---|
-| POST | `/auth/register` | `{ name, email, password }` | Returns `{ token, user }` |
-| POST | `/auth/login` | `{ email, password }` | Returns `{ token, user }` |
-| GET | `/auth/me` | — | Returns current user |
-
-### Documents
-
-| Method | Route | Body | Notes |
-|---|---|---|---|
-| POST | `/documents/upload` | `multipart/form-data`, field name `file` | Kicks off AI processing async |
-| GET | `/documents?page=1&limit=20` | — | List current user's documents |
-| GET | `/documents/:id` | — | Single document + status |
-| DELETE | `/documents/:id` | — | Deletes file + metadata |
-| POST | `/documents/:id/reprocess` | — | Retries AI ingestion if it failed |
-
-Document `processingStatus`: `uploaded → processing → ready` (or `failed`).
-Poll `GET /documents/:id` after upload until `ready` before letting the user query it.
-
-### Chat
-
-| Method | Route | Body | Notes |
-|---|---|---|---|
-| POST | `/chat/query` | `{ question, documentId? }` | Omit `documentId` to query the whole corpus |
-| GET | `/chat/history?documentId=&page=1&limit=50` | — | Chat history, oldest first |
-| DELETE | `/chat/history/:id` | — | Delete one message |
-
-`POST /chat/query` response shape:
-```json
-{
-  "success": true,
-  "message": {
-    "question": "...",
-    "answer": "...",
-    "citations": [{ "documentName": "...", "snippet": "...", "page": 4, "confidence": 0.87 }],
-    "confidenceScore": 0.91,
-    "createdAt": "..."
-  }
-}
+```env
+GEMINI_API_KEY=your_api_key
 ```
 
-## Contract expected from Member 3 (AI/RAG service)
+---
 
-The backend calls these two endpoints on `AI_SERVICE_URL` — Member 3's Python service
-needs to expose them with this shape:
-
-**`POST /ingest`**
-```json
-// request
-{ "documentId": "mongo-id", "filePath": "/abs/path/on/disk", "fileType": "pdf", "originalName": "manual.pdf" }
-// response
-{ "aiDocumentId": "chroma-collection-id", "summary": "...", "keywords": ["..."] }
-```
-
-**`POST /query`**
-```json
-// request
-{ "userId": "mongo-id", "question": "...", "documentId": "mongo-id or null" }
-// response
-{
-  "answer": "...",
-  "citations": [{ "documentId": "...", "documentName": "...", "snippet": "...", "page": 4, "confidence": 0.87 }],
-  "confidenceScore": 0.91
-}
-```
-
-If Member 3's service isn't ready yet, the backend still runs — uploads succeed and
-sit in `processing`/`failed` status, and `/chat/query` returns a clean `502` instead
-of crashing, so Member 1 can build the frontend against this API right now.
-
-## Quick test without a frontend
+## Run AI Service
 
 ```bash
-# register
-curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Hru","email":"hru@test.com","password":"test1234"}'
-
-# login (copy the token from the response)
-curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"hru@test.com","password":"test1234"}'
-
-# upload a file
-curl -X POST http://localhost:5000/api/documents/upload \
-  -H "Authorization: Bearer <TOKEN>" \
-  -F "file=@/path/to/sample.pdf"
+python main.py
 ```
+
+---
+
+# 🧪 Testing
+
+Testing includes:
+
+- Document upload testing
+- Retrieval accuracy testing
+- AI response validation
+- Citation verification
+- Performance testing
+
+
+---
+
+# 🔮 Future Enhancements
+
+- Voice-based industrial assistant
+- Multi-language document understanding
+- Knowledge graph integration
+- Real-time collaboration
+- Cloud-based enterprise deployment
+- Role-based AI assistants
+
+
+---
+
+# 📌 Project Objective
+
+The objective of IKI is to build an intelligent industrial knowledge assistant that reduces information retrieval time and enables organizations to make faster decisions using AI.
+
+---
+
+# 📜 License
+
+Developed as an AI innovation project.
