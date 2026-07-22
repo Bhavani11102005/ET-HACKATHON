@@ -1,319 +1,189 @@
-# 🧠 Industrial Knowledge Intelligence (IKI) Platform
+🎯 Problem Statement
 
-## AI-Powered Industrial Knowledge Management System using RAG
+Industrial organizations store critical knowledge in large document repositories.
 
----
+Traditional search systems:
 
-## 📌 Overview
+Depend on keywords
+Cannot understand context
+Require manual document reading
+Increase decision-making time
 
-Industrial Knowledge Intelligence (IKI) is an AI-powered platform designed to transform industrial documents into an intelligent knowledge system.
+The objective of IKI is to build an AI system that understands industrial knowledge and provides instant, reliable information retrieval.
 
-The platform enables users to upload and interact with industrial documents such as:
+💡 Solution
 
-- PDF manuals
-- DOC/DOCX files
-- Excel sheets
-- PowerPoint presentations
+IKI combines:
 
-Using **Retrieval Augmented Generation (RAG)** and Large Language Models, IKI provides:
+Full-stack web application
+Secure backend services
+Document processing pipeline
+Vector database retrieval
+Generative AI models
 
-- Intelligent document search
-- AI-powered question answering
-- Document summarization
-- Semantic knowledge retrieval
-- Citation-based responses
-- Document comparison
+The platform allows users to:
 
-The goal is to reduce manual effort in searching industrial information and provide accurate knowledge access through AI.
+✅ Upload industrial documents
+✅ Ask questions in natural language
+✅ Search information semantically
+✅ Generate summaries
+✅ Retrieve answers with citations
 
----
+🏗️ System Architecture
+                 User
+                  |
+                  |
+          React Frontend
+                  |
+                  |
+          Node.js Backend
+                  |
+        -------------------
+        |                 |
+    MongoDB          AI Service
+   Database              |
+                         |
+              -----------------
+              |
+        Document Processing
+              |
+        Text Extraction
+              |
+        Chunking
+              |
+        Embeddings
+              |
+          ChromaDB
+              |
+          Gemini LLM
+              |
+        AI Response
+🚀 Features
+📄 Intelligent Document Upload
 
-# 🏗️ System Architecture
+Users can upload:
 
-```
-                         User
-                           |
-                           |
-                  React Web Application
-                           |
-                           |
-                  AI Knowledge Platform
-                           |
-        -------------------------------------
-        |                                   |
- Document Processing                 AI Intelligence
-        |                                   |
-        |                            Gemini API
-        |                                   |
-        |                            LangChain
-        |                                   |
-        |                            ChromaDB
-        |
- PDF / DOCX / Excel / PPT
-        |
- Text Extraction
-        |
- Chunking
-        |
- Embedding Generation
-        |
- Vector Storage
+PDF
+DOCX
+Excel
+PPT documents
 
-```
+The system extracts information and converts documents into searchable knowledge.
 
----
+💬 AI Knowledge Assistant
 
-# 👥 Team Modules
+Users can ask questions:
 
-## 👨‍💻 Frontend & UI/UX Module
+Example:
 
-### Responsibilities
+"Explain the machine maintenance procedure"
 
-- React application development
-- Dashboard creation
-- User interface design
-- Document upload interface
-- AI chat interface
-- Search interface
-- Analytics dashboard
-- User profile management
+"What safety precautions are required?"
 
+The AI generates context-aware answers based on uploaded documents.
 
-### Technologies
+🔍 Semantic Search
 
-- React
-- Tailwind CSS
-- Material UI
-- Axios
-- Chart.js
+Unlike traditional keyword search, IKI understands the meaning behind user queries.
 
+Example:
 
-### Deliverables
+Searching:
 
-✅ Responsive web application  
-✅ Interactive dashboards  
-✅ AI chat interface  
-✅ API integration  
+machine failure prevention
 
----
+can retrieve documents containing:
 
-# 🤖 AI & RAG Intelligence Module
-
-## Responsibilities
-
-The AI module handles document understanding and intelligent retrieval.
-
-### Document Processing
-
-Supports:
-
-- PDF parsing
-- DOCX extraction
-- Excel data processing
-- PPT content extraction
-
-
-### RAG Pipeline
-
-Workflow:
-
-```
-Document Upload
-        |
-        ↓
-Text Extraction
-        |
-        ↓
-Document Chunking
-        |
-        ↓
-Embedding Generation
-        |
-        ↓
-Vector Database Storage
-        |
-        ↓
-User Query
-        |
-        ↓
-Similarity Search
-        |
-        ↓
-Gemini LLM Response
-```
-
----
-
-## Technologies
-
-- Python
-- LangChain
-- Gemini API
-- ChromaDB
-- PyMuPDF
-- python-docx
-- Pandas
-
-
-## Deliverables
-
-✅ Complete RAG pipeline  
-✅ AI chatbot  
-✅ Semantic search engine  
-✅ Knowledge retrieval system  
-
----
-
-# 📊 Advanced AI Features Module
-
-## Intelligent Document Analysis
-
-### Document Summarization
-
-Automatically generates:
-
-- Key points
-- Important information
-- Document overview
-
-
----
-
-### Document Comparison
-
-AI compares multiple documents and identifies:
-
-- Similarities
-- Differences
-- Updated sections
-- Missing information
-
-
----
-
-### Compliance Checker
-
-Analyzes documents to identify:
-
-- Rule violations
-- Missing requirements
-- Safety compliance issues
-
-
----
-
-### Citation Generation
+equipment maintenance guidelines
+📑 Citation-Based Answers
 
 AI responses include:
 
-- Source document
-- Relevant page number
-- Extracted content snippet
-- Confidence score
+Source document
+Page reference
+Relevant content
+Confidence score
 
+This improves trust and reliability.
 
----
+📊 AI Analytics Module
 
-### Analytics Dashboard
+(Currently under development)
 
-Provides insights about:
+Planned features:
 
-- Frequently searched topics
-- Document usage
-- User interactions
-- Knowledge trends
+Frequently searched topics
+Document usage analytics
+User interaction analysis
+Knowledge trends
+🤖 AI/RAG Pipeline
 
+The AI system follows:
 
----
+Document Upload
 
-# 🔄 AI Workflow
-
-```
-Industrial Documents
-
-        |
         ↓
 
-Document Understanding
+Document Parsing
 
-        |
         ↓
 
-AI Knowledge Extraction
+Text Extraction
 
-        |
         ↓
 
-Vector Database
+Chunk Creation
 
-        |
         ↓
 
-User Question
+Embedding Generation
 
-        |
         ↓
 
-Semantic Retrieval
+Vector Database Storage
 
-        |
         ↓
 
-Gemini AI Response
+User Query
 
-        |
+        ↓
+
+Similarity Search
+
+        ↓
+
+Gemini Response Generation
+
         ↓
 
 Answer + Citations
-
-```
-
----
-
-# 🛠️ Technology Stack
-
-## Frontend
-
-```
+🛠️ Technology Stack
+Frontend
 React
 Tailwind CSS
 Material UI
 Axios
 Chart.js
-```
-
-## Artificial Intelligence
-
-```
+Backend
+Node.js
+Express.js
+MongoDB
+JWT Authentication
+REST APIs
+AI Layer
 Python
 LangChain
 Gemini API
 ChromaDB
-Embedding Models
-```
-
-## Document Processing
-
-```
 PyMuPDF
 python-docx
 Pandas
-```
-
-## Deployment
-
-```
+Deployment
 Docker
+GitHub
 Vercel
 Render
-GitHub
-```
-
----
-
-# 📂 Project Structure
-
-```
+📂 Project Structure
 IKI-Platform
 
 │
@@ -324,124 +194,74 @@ IKI-Platform
 │   ├── services
 │   └── assets
 │
+├── backend
+│
+│   ├── models
+│   ├── routes
+│   ├── controllers
+│   └── middleware
 │
 ├── ai-service
 │
-│   ├── document_parser
+│   ├── document_processing
 │   ├── embeddings
 │   ├── rag_pipeline
 │   ├── vector_store
 │   └── models
 │
-│
 └── README.md
 
-```
+👥 Team Contributions
+Frontend Development
 
----
+Implemented:
 
-# 🚀 Features
+User interface
+Dashboard
+Document upload screens
+AI chat interface
+Backend Development
 
-## 📄 Intelligent Document Processing
+Implemented:
 
-- Upload industrial documents
-- Extract meaningful information
-- Convert documents into searchable knowledge
+Authentication
+REST APIs
+Database management
+Document handling
+AI service communication
+AI/RAG Development
 
+Implemented:
 
-## 💬 AI Knowledge Assistant
+Document parsing
+Text processing
+Embedding generation
+Vector search
+AI response generation
+AI Features & Deployment
 
-Users can ask questions like:
+Upcoming:
 
-> "Explain the machine maintenance procedure"
+Document summarization
+Document comparison
+Compliance checking
+Analytics dashboard
+Testing
+Deployment
+🔮 Future Enhancements
+Voice-based AI assistant
+Multi-language support
+Knowledge graph integration
+Enterprise cloud deployment
+Real-time collaboration
+Advanced analytics
+📌 Project Status
+Module	Status
+Frontend	✅ Completed
+Backend	✅ Completed
+AI/RAG Pipeline	✅ Completed
+Advanced AI Features	🚧 In Progress
+Deployment	🚧 In Progress
+📜 License
 
-> "What are the safety requirements?"
-
-The AI provides contextual answers from uploaded documents.
-
-
-## 🔍 Semantic Search
-
-Unlike traditional keyword search, the system understands the meaning behind queries.
-
-
-## 📑 Source-Based Answers
-
-Every response provides:
-
-- Document reference
-- Page number
-- Relevant text
-- Confidence score
-
-
----
-
-# ⚙️ AI Module Setup
-
-## Install Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Environment Variables
-
-Create:
-
-```
-.env
-```
-
-Add:
-
-```env
-GEMINI_API_KEY=your_api_key
-```
-
----
-
-## Run AI Service
-
-```bash
-python main.py
-```
-
----
-
-# 🧪 Testing
-
-Testing includes:
-
-- Document upload testing
-- Retrieval accuracy testing
-- AI response validation
-- Citation verification
-- Performance testing
-
-
----
-
-# 🔮 Future Enhancements
-
-- Voice-based industrial assistant
-- Multi-language document understanding
-- Knowledge graph integration
-- Real-time collaboration
-- Cloud-based enterprise deployment
-- Role-based AI assistants
-
-
----
-
-# 📌 Project Objective
-
-The objective of IKI is to build an intelligent industrial knowledge assistant that reduces information retrieval time and enables organizations to make faster decisions using AI.
-
----
-
-# 📜 License
-
-Developed as an AI innovation project.
+This project is developed as part of an AI innovation initiative
