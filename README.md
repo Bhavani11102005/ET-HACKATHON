@@ -1,125 +1,167 @@
-🎯 Problem Statement
+# 🧠 Industrial Knowledge Intelligence (IKI) Platform
 
-Industrial organizations store critical knowledge in large document repositories.
+## AI-Powered Industrial Document Intelligence System using RAG
 
-Traditional search systems:
+---
 
-Depend on keywords
-Cannot understand context
-Require manual document reading
-Increase decision-making time
+## 📌 Overview
 
-The objective of IKI is to build an AI system that understands industrial knowledge and provides instant, reliable information retrieval.
+Industrial Knowledge Intelligence (IKI) is an AI-powered platform that transforms industrial documents into an intelligent knowledge system.
 
-💡 Solution
+Industries generate large amounts of technical information through:
 
-IKI combines:
+- Equipment manuals
+- Maintenance documents
+- Safety guidelines
+- Technical reports
+- Compliance documents
 
-Full-stack web application
-Secure backend services
-Document processing pipeline
-Vector database retrieval
-Generative AI models
+Searching through these documents manually is time-consuming and inefficient.
 
-The platform allows users to:
+IKI solves this challenge by using **Retrieval Augmented Generation (RAG)** and Generative AI to provide users with accurate, context-aware answers from their documents.
 
-✅ Upload industrial documents
-✅ Ask questions in natural language
-✅ Search information semantically
-✅ Generate summaries
-✅ Retrieve answers with citations
+---
 
-🏗️ System Architecture
-                 User
-                  |
-                  |
-          React Frontend
-                  |
-                  |
-          Node.js Backend
-                  |
-        -------------------
-        |                 |
-    MongoDB          AI Service
-   Database              |
-                         |
-              -----------------
+# 🎯 Problem Statement
+
+Industrial organizations often struggle with:
+
+- Large volumes of unstructured documents
+- Slow information retrieval
+- Difficulty finding relevant technical information
+- Dependency on manual document analysis
+
+The objective of IKI is to build an AI assistant that can understand industrial knowledge and provide instant information retrieval with reliable references.
+
+---
+
+# 💡 Solution
+
+IKI provides an intelligent platform where users can:
+
+✅ Upload industrial documents  
+✅ Search information using natural language  
+✅ Ask questions from documents  
+✅ Generate AI-based responses  
+✅ Retrieve answers with citations  
+
+The system combines:
+
+- Modern web technologies
+- Secure backend services
+- AI-powered document processing
+- Vector-based semantic search
+- Large Language Models
+
+---
+
+# 🏗️ System Architecture
+
+```
+                         User
+                           |
+                           |
+                  React Frontend
+                           |
+                           |
+                  Backend API
+                           |
+              -----------------------
+              |                     |
+          Database              AI Service
+              |                     |
+              |              ----------------
+              |              |
+              |        Document Processing
+              |              |
+              |        Text Extraction
+              |              |
+              |        Chunking
+              |              |
+              |        Embeddings
+              |              |
+              |        Vector Database
+              |              |
+              |        Gemini LLM
               |
-        Document Processing
               |
-        Text Extraction
-              |
-        Chunking
-              |
-        Embeddings
-              |
-          ChromaDB
-              |
-          Gemini LLM
-              |
-        AI Response
-🚀 Features
-📄 Intelligent Document Upload
+        User Data
+        Documents
+        Chat History
 
-Users can upload:
+```
 
-PDF
-DOCX
-Excel
-PPT documents
+---
 
-The system extracts information and converts documents into searchable knowledge.
+# 🚀 Features
 
-💬 AI Knowledge Assistant
+## 📄 Intelligent Document Processing
 
-Users can ask questions:
+IKI supports processing of:
+
+- PDF documents
+- DOC/DOCX files
+- Excel files
+- PowerPoint files
+
+The system extracts document content and converts it into searchable knowledge.
+
+---
+
+# 💬 AI Knowledge Assistant
+
+Users can interact with uploaded documents using natural language.
+
+Example queries:
+
+```
+Explain the machine maintenance procedure.
+
+What are the safety requirements?
+
+Summarize this technical document.
+```
+
+The AI provides meaningful answers based on the document content.
+
+---
+
+# 🔍 Semantic Search
+
+IKI uses AI-powered semantic search instead of traditional keyword matching.
+
+The system understands the meaning behind user queries and retrieves relevant information from documents.
 
 Example:
 
-"Explain the machine maintenance procedure"
-
-"What safety precautions are required?"
-
-The AI generates context-aware answers based on uploaded documents.
-
-🔍 Semantic Search
-
-Unlike traditional keyword search, IKI understands the meaning behind user queries.
-
-Example:
-
-Searching:
-
+```
+Query:
 machine failure prevention
 
-can retrieve documents containing:
-
+Result:
 equipment maintenance guidelines
-📑 Citation-Based Answers
+```
 
-AI responses include:
+---
 
-Source document
-Page reference
-Relevant content
-Confidence score
+# 📑 Citation-Based Responses
 
-This improves trust and reliability.
+AI responses provide supporting information including:
 
-📊 AI Analytics Module
+- Source document
+- Relevant page number
+- Extracted content
+- Confidence score
 
-(Currently under development)
+This improves accuracy and user trust.
 
-Planned features:
+---
 
-Frequently searched topics
-Document usage analytics
-User interaction analysis
-Knowledge trends
-🤖 AI/RAG Pipeline
+# 🤖 AI / RAG Pipeline
 
-The AI system follows:
+The Retrieval Augmented Generation workflow:
 
+```
 Document Upload
 
         ↓
@@ -132,7 +174,7 @@ Text Extraction
 
         ↓
 
-Chunk Creation
+Text Chunking
 
         ↓
 
@@ -148,29 +190,49 @@ User Query
 
         ↓
 
-Similarity Search
+Semantic Retrieval
 
         ↓
 
-Gemini Response Generation
+Gemini AI Processing
 
         ↓
 
-Answer + Citations
-🛠️ Technology Stack
-Frontend
-React
+Answer Generation with Citations
+
+```
+
+---
+
+# 🛠️ Technology Stack
+
+## Frontend
+
+```
+React.js
 Tailwind CSS
 Material UI
 Axios
 Chart.js
-Backend
+```
+
+---
+
+## Backend
+
+```
 Node.js
 Express.js
 MongoDB
 JWT Authentication
 REST APIs
-AI Layer
+```
+
+---
+
+## Artificial Intelligence
+
+```
 Python
 LangChain
 Gemini API
@@ -178,12 +240,25 @@ ChromaDB
 PyMuPDF
 python-docx
 Pandas
-Deployment
+```
+
+---
+
+## Deployment & Tools
+
+```
 Docker
 GitHub
 Vercel
 Render
-📂 Project Structure
+Postman
+```
+
+---
+
+# 📂 Project Structure
+
+```
 IKI-Platform
 
 │
@@ -194,12 +269,14 @@ IKI-Platform
 │   ├── services
 │   └── assets
 │
+│
 ├── backend
 │
 │   ├── models
 │   ├── routes
 │   ├── controllers
 │   └── middleware
+│
 │
 ├── ai-service
 │
@@ -209,59 +286,152 @@ IKI-Platform
 │   ├── vector_store
 │   └── models
 │
+│
 └── README.md
 
-👥 Team Contributions
-Frontend Development
+```
 
-Implemented:
+---
 
-User interface
-Dashboard
-Document upload screens
-AI chat interface
-Backend Development
+# ⚙️ Installation & Setup
 
-Implemented:
+## Clone Repository
 
-Authentication
-REST APIs
-Database management
-Document handling
-AI service communication
-AI/RAG Development
+```bash
+git clone <repository-url>
 
-Implemented:
+cd IKI-Platform
+```
 
-Document parsing
-Text processing
-Embedding generation
-Vector search
-AI response generation
-AI Features & Deployment
+---
 
-Upcoming:
+# Frontend Setup
 
-Document summarization
-Document comparison
-Compliance checking
-Analytics dashboard
-Testing
-Deployment
-🔮 Future Enhancements
-Voice-based AI assistant
-Multi-language support
-Knowledge graph integration
-Enterprise cloud deployment
-Real-time collaboration
-Advanced analytics
-📌 Project Status
-Module	Status
-Frontend	✅ Completed
-Backend	✅ Completed
-AI/RAG Pipeline	✅ Completed
-Advanced AI Features	🚧 In Progress
-Deployment	🚧 In Progress
-📜 License
+```bash
+cd frontend
 
-This project is developed as part of an AI innovation initiative
+npm install
+
+npm start
+```
+
+---
+
+# Backend Setup
+
+```bash
+cd backend
+
+npm install
+
+npm run dev
+```
+
+---
+
+# AI Service Setup
+
+Create virtual environment:
+
+```bash
+python -m venv venv
+```
+
+Activate environment:
+
+Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run AI service:
+
+```bash
+python main.py
+```
+
+---
+
+# 📊 Current Project Status
+
+| Module | Status |
+|---|---|
+| Frontend Application | ✅ Completed |
+| Backend APIs | ✅ Completed |
+| Database Integration | ✅ Completed |
+| Authentication | ✅ Completed |
+| Document Processing | ✅ Completed |
+| RAG Pipeline | ✅ Completed |
+| AI Chat Assistant | ✅ Completed |
+| Document Summarization | 🚧 In Progress |
+| Document Comparison | 🚧 In Progress |
+| Compliance Checker | 🚧 In Progress |
+| Deployment | 🚧 In Progress |
+
+---
+
+# 🔮 Future Enhancements
+
+- Voice-based industrial assistant
+- Multi-language document understanding
+- Knowledge graph integration
+- Enterprise cloud deployment
+- Advanced analytics dashboard
+- Role-based AI assistants
+- Real-time collaboration
+
+---
+
+# 👥 Team Contribution
+
+### Frontend Development
+
+- User interface
+- Dashboard
+- Document upload interface
+- AI chat interface
+
+
+### Backend Development
+
+- Authentication system
+- REST APIs
+- Database management
+- Document handling
+
+
+### AI Development
+
+- Document processing
+- RAG pipeline
+- Vector search
+- AI response generation
+
+
+### AI Features & Deployment
+
+- Advanced AI capabilities
+- Testing
+- Deployment
+- Documentation
+
+---
+
+# 📌 Conclusion
+
+Industrial Knowledge Intelligence (IKI) provides an intelligent way to access industrial knowledge by combining modern web technologies with Generative AI.
+
+The platform reduces manual searching effort and enables faster decision-making through AI-powered document understanding.
+
+---
+
+# 📜 License
+
+This project is developed as an AI innovation project.
